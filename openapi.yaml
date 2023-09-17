@@ -196,7 +196,7 @@ components:
             |  返回值   | 含义  |
             |  ----  | ----  |
             | 0  | 执行成功 |
-            | 400  | 执行失败，<kbd>percent</kbd> 将返回 -1 |
+            | 400  | 执行失败，`percent` 将返回 -1 |
         percent:
           type: number
           format: float
@@ -219,7 +219,7 @@ components:
             |  返回值   | 含义  |
             |  ----  | ----  |
             | 0  | 执行成功 |
-            | 400  | 执行失败，<kbd>percent</kbd> 将返回 -1 |
+            | 400  | 执行失败，`percent` 将返回 -1 |
         percent:
           type: number
           format: float
@@ -235,8 +235,8 @@ components:
 
             |  返回值   | App 显示 |  准度  |
             |  ----  | ---- | ----  |
-            | 1  | <kbd>v1</kbd> | 多项式拟合法，准度较差 |
-            | 2  | <kbd>v2</kbd> | 班排算法，准度在成绩集中区较高 |
+            | 1  | `v1` | 多项式拟合法，准度较差 |
+            | 2  | `v2` | 班排算法，准度在成绩集中区较高 |
           examples: 
             - 1
             - 2
@@ -255,7 +255,7 @@ components:
             |  返回值   | 含义  |
             |  ----  | ----  |
             | 0  | 执行成功 |
-            | 400  | 执行失败，<kbd>data</kbd> 中各项将返回 -1 |
+            | 400  | 执行失败，`data` 中各项将返回 -1 |
         data:
           type: object
           properties: 
@@ -353,7 +353,7 @@ components:
             |  返回值   | 含义  |
             |  ----  | ----  |
             | 0  | 执行成功 |
-            | 400  | 执行失败，<kbd>data</kbd> 中各项将返回 -1 |
+            | 400  | 执行失败，`data` 中各项将返回 -1 |
         data:
           type: array
           items:
