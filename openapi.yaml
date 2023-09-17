@@ -1,0 +1,361 @@
+openapi: 3.1.0
+info:
+  title: 出分啦
+  contact:
+    email: goforcex@outlook.com
+  license:
+    name: MIT License
+    url: https://mit-license.org/
+  version: 0.32.3
+servers:
+  - url: https://matrix.npcstation.com/api
+tags:
+  - name: exam
+    description: 考试数据
+  - name: paper
+    description: 单科数据
+paths:
+  /exam/predict/{examId}/{score}:
+    get:
+      tags:
+        - exam
+      summary: 获取考试预测百分比数据
+      operationId: examPredict
+      parameters:
+        - name: examId
+          in: path
+          description: 考试 UUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: score
+          in: path
+          description: 考试得分
+          required: true
+          schema:
+            type: number
+            format: float
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamPredict'
+  /exam/score_info/{examId}:
+    get:
+      tags:
+        - exam
+      summary: 获取考试年级整体数据
+      operationId: examScoreInfo
+      parameters:
+        - name: examId
+          in: path
+          description: 考试 UUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreInfo'
+  /exam/class_info/{examId}:
+    get:
+      tags:
+        - exam
+      summary: 获取考试年级各班数据
+      operationId: examClassInfo
+      parameters:
+        - name: examId
+          in: path
+          description: 考试 UUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassInfo'
+  /paper/predict/{paperId}/{score}:
+    get:
+      tags:
+        - paper
+      summary: 获取单科预测百分比数据
+      operationId: paperPredict
+      parameters:
+        - name: paperId
+          in: path
+          description: 考试单科 UUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: score
+          in: path
+          description: 单科得分
+          required: true
+          schema:
+            type: number
+            format: float
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaperPredict'
+  /paper/score_info/{paperId}:
+    get:
+      tags:
+        - paper
+      summary: 获取单科年级整体数据
+      operationId: paperScoreInfo
+      parameters:
+        - name: paperId
+          in: path
+          description: 考试单科 UUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreInfo'
+  /paper/class_info/{paperId}:
+    get:
+      tags:
+        - paper
+      summary: 获取单科年级各班数据
+      operationId: paperClassInfo
+      parameters:
+        - name: paperId
+          in: path
+          description: 考试单科 UUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassInfo'
+  /img/paper/triple/{paperId}:
+    get:
+      tags:
+        - paper
+      summary: 获取单科年级分布图
+      operationId: paperImgTriple
+      parameters:
+        - name: paperId
+          in: path
+          description: 考试单科 UUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            image/png: 
+              schema:
+                type: string
+                format: binary
+              
+
+components:
+  schemas:
+    ExamPredict:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int64
+          examples: 
+            - 0
+            - 400
+          description: |
+            返回代码
+
+            |  返回值   | 含义  |
+            |  ----  | ----  |
+            | 0  | 执行成功 |
+            | 400  | 执行失败，<kbd>percent</kbd> 将返回 -1 |
+        percent:
+          type: number
+          format: float
+          examples: 
+            - 0.114514
+          description: |
+            百分比站位，可能会超过 1 或低于 0
+    PaperPredict:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int64
+          examples: 
+            - 0
+            - 400
+          description: |
+            返回代码
+
+            |  返回值   | 含义  |
+            |  ----  | ----  |
+            | 0  | 执行成功 |
+            | 400  | 执行失败，<kbd>percent</kbd> 将返回 -1 |
+        percent:
+          type: number
+          format: float
+          examples: 
+            - 0.114514
+          description: |
+            百分比站位，可能会超过 1 或低于 0
+        version:
+          type: integer
+          format: int64
+          description: |
+            算法版本号
+
+            |  返回值   | App 显示 |  准度  |
+            |  ----  | ---- | ----  |
+            | 1  | <kbd>v1</kbd> | 多项式拟合法，准度较差 |
+            | 2  | <kbd>v2</kbd> | 班排算法，准度在成绩集中区较高 |
+          examples: 
+            - 1
+            - 2
+    ScoreInfo:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int64
+          examples: 
+            - 0
+            - 400
+          description: |
+            返回代码
+
+            |  返回值   | 含义  |
+            |  ----  | ----  |
+            | 0  | 执行成功 |
+            | 400  | 执行失败，<kbd>data</kbd> 中各项将返回 -1 |
+        data:
+          type: object
+          properties: 
+            max:
+              type: number
+              format: float
+              examples: 
+                - 750.0
+              description: |
+                年级最高分
+            min:
+              type: number
+              format: float
+              examples: 
+                - 0.0
+              description: |
+                年级最低分
+            med:
+              type: number
+              format: float
+              examples: 
+                - 600.0
+              description: |
+                年级得分中位数
+            avg:
+              type: number
+              format: float
+              examples: 
+                - 612.34
+              description: |
+                年级得分平均值
+    ClassScoreInfo:
+      type: object
+      properties:
+        class_name:
+          type: string
+          examples: 
+            - 高三年级 1班 / 高二年级 1班
+            - 高一年级 1班
+          description: |
+            班级名称
+        class_id:
+          type: string
+          examples: 
+            - 1500000100116456941
+          description: |
+            班级内部 ID
+        count:
+          type: integer
+          format: int64
+          examples: 
+            - 10
+          description: |
+            班级数据条数
+        max:
+          type: number
+          format: float
+          examples: 
+            - 750.0
+          description: |
+            班级最高分
+        min:
+          type: number
+          format: float
+          examples: 
+            - 0.0
+          description: |
+            班级最低分
+        med:
+          type: number
+          format: float
+          examples: 
+            - 600.0
+          description: |
+            班级得分中位数
+        avg:
+          type: number
+          format: float
+          examples: 
+            - 612.34
+          description: |
+            班级得分平均值
+    ClassInfo:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int64
+          examples: 
+            - 0
+            - 400
+          description: |
+            返回代码
+
+            |  返回值   | 含义  |
+            |  ----  | ----  |
+            | 0  | 执行成功 |
+            | 400  | 执行失败，<kbd>data</kbd> 中各项将返回 -1 |
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassScoreInfo'
+          
