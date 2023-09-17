@@ -26,7 +26,7 @@ jobs:
         with:
           doc: a3335917-3ceb-4bc2-b0d1-be392ca31464
           token: ${{secrets.BUMP_TOKEN}}
-          file: openapi.yml
+          file: openapi.yaml
 
   api-diff:
     if: ${{ github.event_name == 'pull_request' }}
@@ -40,7 +40,7 @@ jobs:
         with:
           doc: a3335917-3ceb-4bc2-b0d1-be392ca31464
           token: ${{secrets.BUMP_TOKEN}}
-          file: openapi.yml
+          file: openapi.yaml
           command: diff
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
